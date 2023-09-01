@@ -1,4 +1,4 @@
-# Symfony
+# symfonyEcfBiblio
 
 Ce repo contient une application de gestion de bibliothèque.
 
