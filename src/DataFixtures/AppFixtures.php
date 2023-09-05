@@ -39,19 +39,19 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
                 'email' => 'admin@example.com',
                 'password' => '123',
                 'roles' => ['ROLE_ADMIN'],
-                'enabled' => 'true'
+                'enabled' => true,
             ],
         ];
 
         foreach ($datas as $data) {
-        $user = new User();
-        $user->setEmail($data['email']);
-        $password = $this->hasher->hashPassword($user, $data['password']);
-        $user->setPassword($password);
-        $user->setRoles($data['roles']);
-        $user->setEnabled($data['enabled']);
+            $user = new User();
+            $user->setEmail($data['email']);
+            $password = $this->hasher->hashPassword($user, $data['password']);
+            $user->setPassword($password);
+            $user->setRoles($data['roles']);
+            $user->setEnabled($data['enabled']);
 
-        $this->manager->persist($user); 
+            $this->manager->persist($user); 
         }
 
         $this->manager->flush(); 

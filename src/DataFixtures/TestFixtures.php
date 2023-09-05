@@ -77,9 +77,9 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
         // données dynamiques
         for($i = 0; $i < 500; $i++) {
             $auteur = new Auteur();
-            $auteur->setNom($this->faker->word(1));
+            $auteur->setNom($this->faker->word());
 
-            $auteur->setPrenom($this->faker->word(1));
+            $auteur->setPrenom($this->faker->word());
 
             $this->manager->persist($auteur);
         }
@@ -95,55 +95,55 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
         $datas = [
             [
                 'nom' => 'poésie',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'nouvelle',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'roman historique',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'roman d\'amour',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'roman d\'aventure',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'science-fiction',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'fantasy',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'biographie',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'conte',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'témoignage',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'théâtre',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'essai',
-                'description' => NULL
+                'description' => null
             ],
             [
                 'nom' => 'journal intime',
-                'description' => NULL
+                'description' => null
             ],
         ];
 
@@ -171,7 +171,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'anneeEdition' => '2010',
                 'nombrePages' => '100',
                 'codeIsbn' => '9785786930024',
-                'auteurId' => $auteurs[0],
+                'auteur' => $auteurs[0],
                 'genres' => $genres[0]
             ],
             [
@@ -179,7 +179,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'anneeEdition' => '2011',
                 'nombrePages' => '150',
                 'codeIsbn' => '9783817260935',
-                'auteurId' => $auteurs[1],
+                'auteur' => $auteurs[1],
                 'genres' => $genres[1]
             ],
             [
@@ -187,7 +187,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'anneeEdition' => '2012',
                 'nombrePages' => '200',
                 'codeIsbn' => '9782020493727',
-                'auteurId' => $auteurs[2],
+                'auteur' => $auteurs[2],
                 'genres' => $genres[2]
             ],
             [
@@ -195,7 +195,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'anneeEdition' => '2013',
                 'nombrePages' => '250',
                 'codeIsbn' => '9794059561353',
-                'auteurId' => $auteurs[3],
+                'auteur' => $auteurs[3],
                 'genres' => $genres[3]
             ],
             
@@ -207,13 +207,12 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $livre->setAnneeEdition($data['anneeEdition']);
             $livre->setNombrePage($data['nombrePages']);
             $livre->setCodeIsbn($data['codeIsbn']);
-            $livre->setAuteur($data['auteurId']);
+            $livre->setAuteur($data['auteur']);
             $livre->addGenre($data['genres']);            
             
             $this->manager->persist($livre);
         }
         $this->manager->flush();
-        
         
         // données dynamiques
         for($i = 0; $i < 1000; $i++) {
@@ -224,13 +223,9 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $livre->setNombrePage($this->faker->randomNumber());
             $livre->setCodeIsbn($this->faker->optional($weight = 0.6)->randomNumber());
 
+            $auteur = $this->faker->randomElement($auteurs);
+            $livre->setAuteur($auteur);
 
-            $shortListAuteur = $this->faker->randomElements($auteurs);
-            foreach ($shortListAuteur as $auteur) {
-                $livre->setAuteur($auteur); 
-            }
-
-            
             $genresCount = random_int(1, 4);
             $shortListGenres = $this->faker->randomElements($genres, $genresCount);
 
@@ -255,20 +250,20 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             [
                 'dateEmprunt' => new DateTime('2020-02-01 10:00:00'),
                 'dateRetour' => new DateTime('2020-03-01 10:00:00'),
-                'emprunteurId' => $emprunteurs[0],
-                'livreId' => $livres[0]
+                'emprunteur' => $emprunteurs[0],
+                'livre' => $livres[0]
             ],
             [
                 'dateEmprunt' => new DateTime('2020-03-01 10:00:00'),
                 'dateRetour' => new DateTime('2020-04-01 10:00:00'),
-                'emprunteurId' => $emprunteurs[1],
-                'livreId' => $livres[1]
+                'emprunteur' => $emprunteurs[1],
+                'livre' => $livres[1]
             ],
             [
                 'dateEmprunt' => new DateTime('2020-04-01 10:00:00'),
                 'dateRetour' => NULL,
-                'emprunteurId' => $emprunteurs[2],
-                'livreId' => $livres[2]
+                'emprunteur' => $emprunteurs[2],
+                'livre' => $livres[2]
             ],
         ];
 
@@ -276,8 +271,8 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $emprunt = new Emprunt();
             $emprunt->setDateEmprunt($data['dateEmprunt']);
             $emprunt->setDateRetour($data['dateRetour']);
-            $emprunt->setEmprunteur($data['emprunteurId']);
-            $emprunt->setLivre($data['livreId']);
+            $emprunt->setEmprunteur($data['emprunteur']);
+            $emprunt->setLivre($data['livre']);
 
             $this->manager->persist($emprunt);
         }
@@ -291,17 +286,12 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $dateRetour = $this->faker->optional(0.7)->dateTimeBetween('-5 months', '-1 months');
             $emprunt->setDateRetour($dateRetour);
             
-            $shortListEmprunteur = $this->faker->randomElements($emprunteurs);
-            foreach ($shortListEmprunteur as $emprunteur) {
-                $emprunt->setEmprunteur($emprunteur); 
-            }
+            $emprunteur = $this->faker->randomElement($emprunteurs);
+            $emprunt->setEmprunteur($emprunteur);
 
-            $shortListLivre = $this->faker->randomElements($livres);
-            foreach ($shortListLivre as $livre) {
-                $emprunt->setLivre($livre); 
-            }
+            $livre = $this->faker->randomElement($livres);
+            $emprunt->setLivre($livre);
             
-
             $this->manager->persist($emprunt);
         }
         $this->manager->flush();
@@ -309,9 +299,6 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
 
     public function loadUsers() : void 
     {
-        $repoEmprunteur = $this->manager->getRepository(Emprunteur::class);
-        $emprunteurs = $repoEmprunteur->findAll();
-
         // données statiques
         $datas = [
             [
@@ -322,7 +309,6 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'nom' => 'foo',
                 'prenom' => 'foo',
                 'telephone' => '123456789'
-                
             ],
             [
                 'email' => 'bar.bar@example.com',
@@ -350,43 +336,43 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $user->setPassword($password);
             $user->setRoles($data['roles']);
             $user->setEnabled($data['enabled']);
-        
+            
         
             $this->manager->persist($user); 
         
-            foreach($datas as $data) {
-                $emprunteur = new Emprunteur();
-                $emprunteur->setNom($data['nom']);
-                $emprunteur->setPrenom($data['prenom']);
-                $emprunteur->setTelephone($data['telephone']);
+            
+            $emprunteur = new Emprunteur();
+            $emprunteur->setNom($data['nom']);
+            $emprunteur->setPrenom($data['prenom']);
+            $emprunteur->setTelephone($data['telephone']);
+            $emprunteur->setUser($user);
 
-                $this->manager->persist($emprunteur);
-            }
-            $this->manager->flush();
-
-            // données dynamiques
-            for($i = 0; $i < 100; $i++) {
-                $user = new User();
-                $user->setEmail($this->faker->unique()->safeEmail());
-                $password = $this->hasher->hashPassword($user, '123');
-                $user->setPassword($password);
-                $user->setRoles(['ROLE_USER']);
-                $enabled = [true, false];
-                $user->setEnabled($this->faker->randomElement($enabled));
-
-                $this->manager->persist($user);
-
-                $emprunteur = new Emprunteur();
-                $emprunteur->setNom($this->faker->word(1));
-                $emprunteur->setPrenom($this->faker->word(1));
-                $emprunteur->setTelephone($this->faker->unique()->randomNumber());
-                $emprunteur->setUser($user);
-
-                $this->manager->persist($emprunteur);
-            }
+            $this->manager->persist($emprunteur);
+            
             $this->manager->flush();
         }
-    }
 
-    
+        // données dynamiques
+        for($i = 0; $i < 100; $i++) {
+            $user = new User();
+            $user->setEmail($this->faker->unique()->safeEmail());
+            $password = $this->hasher->hashPassword($user, '123');
+            $user->setPassword($password);
+            $user->setRoles(['ROLE_USER']);
+            $enabled = [true, false];
+            $user->setEnabled($this->faker->randomElement($enabled));
+
+            $this->manager->persist($user);
+
+            $emprunteur = new Emprunteur();
+            $emprunteur->setNom($this->faker->word(1));
+            $emprunteur->setPrenom($this->faker->word(1));
+            $emprunteur->setTelephone($this->faker->unique()->randomNumber());
+            $emprunteur->setUser($user);
+
+            $this->manager->persist($emprunteur);
+        }
+        $this->manager->flush();
+        
+    }
 }
