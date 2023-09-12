@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use DateTime;
+use Date;
 use Exception;
 use App\Entity\Auteur;
 use App\Entity\Emprunt;
@@ -80,7 +81,7 @@ class TestController extends AbstractController
         $auteurSF = $auteurRepository->find(2);
         $genreSF = $genreRepository->find(6);
 
-            //   - ajouter un nouveau livre
+            // Ajouter un nouveau livre
         $sf = new Livre();
         //   - titre : Totum autem id externum
         $sf->setTitre('Totum autem id externum');
@@ -102,7 +103,7 @@ class TestController extends AbstractController
             // Requêtes de mise à jour :
 
         $genreRA = $genreRepository->find(5);
-        //   - modifier le livre dont l'id est `2`
+        // Modifier le livre dont l'id est `2`
         $livre2 = $livreRepository->find(2);
         //   - titre : Aperiendum est igitur
         $livre2->setTitre('Aperiendum est igitur');
@@ -113,11 +114,11 @@ class TestController extends AbstractController
 
             // Requêtes de suppression :
         $livre123 = $livreRepository->find(123);
-            //   - supprimer le livre dont l'id est `123`
+            // Supprimer le livre dont l'id est `123`
         if ($livre123){
             // Suppression de l'objet
-            $em->remove($livre123);
-            $em->flush();
+        $em->remove($livre123);
+        $em->flush();
         }
 
         return $this->render('test/livre.html.twig', [
@@ -135,20 +136,108 @@ class TestController extends AbstractController
     public function emprunteur(ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
+        $emprunteurRepository = $em->getRepository(Emprunteur::class);
         
+            //     Requêtes de lecture :
+
+        // Liste complète des emprunteurs, triée par ordre alphabétique de nom et prénom
+        $emprunteurListe = $emprunteurRepository->findAll();
+
+        // Données de l'emprunteur dont l'id est `3`
+        $emprunteur3 = $emprunteurRepository->find(3);
+
+        // Données de l'emprunteur qui est relié au user dont l'id est `3`
+        $emprunteurUser = $emprunteurRepository->findByUser(3);
+
+        // Liste des emprunteurs dont le nom ou le prénom contient le mot clé `foo`, triée par ordre alphabétique de nom et prénom
+        $emprunteurFoo = $emprunteurRepository->findEmprunteurByKeyword('foo');
+
+        // Liste des emprunteurs dont le téléphone contient le mot clé `1234`, triée par ordre alphabétique de nom et prénom
+        $emprunteurTel = $emprunteurRepository->findEmprunteurByTel(1234);
+
+        // Liste des emprunteurs dont la date de création est antérieure au 01/03/2021 exclu (c-à-d strictement plus petit), triée par ordre alphabétique de nom et prénom
+
 
         return $this->render('test/emprunteur.html.twig', [
-            
+            'emprunteurListe' => $emprunteurListe,
+            'emprunteur3' => $emprunteur3,
+            'emprunteurUser' => $emprunteurUser,
+            'emprunteurFoo' => $emprunteurFoo,
+            'emprunteurTel' => $emprunteurTel,
         ]);
     }
 
-//     Requêtes de lecture :
+    #[Route('/emprunt', name: 'app_test_emprunt')]
+    public function emprunt(ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+        $empruntRepository = $em->getRepository(Emprunt::class);
+        $livreRepository = $em->getRepository(Livre::class);
+        $emprunteurRepository = $em->getRepository(emprunteur::class);
+        
+            // Requêtes de lecture :
 
-// - la liste complète des emprunteurs, triée par ordre alphabétique de nom et prénom
-// - les données de l'emprunteur dont l'id est `3`
-// - les données de l'emprunteur qui est relié au user dont l'id est `3`
-// - la liste des emprunteurs dont le nom ou le prénom contient le mot clé `foo`, triée par ordre alphabétique de nom et prénom
-// - la liste des emprunteurs dont le téléphone contient le mot clé `1234`, triée par ordre alphabétique de nom et prénom
-// - la liste des emprunteurs dont la date de création est antérieure au 01/03/2021 exclu (c-à-d strictement plus petit), triée par ordre alphabétique de nom et prénom
+        // Liste des 10 derniers emprunts au niveau chronologique, triée par ordre **décroissant** de date d'emprunt (le plus récent en premier)
+        $empruntDate = $empruntRepository->findByDate();
+
+        // Liste des emprunts de l'emprunteur dont l'id est `2`, triée par ordre **croissant** de date d'emprunt (le plus ancien en premier)
+        $empruntByEmprunteur = $empruntRepository->findByEmprunteur(2);
+
+        // Liste des emprunts du livre dont l'id est `3`, triée par ordre **décroissant** de date d'emprunt (le plus récent en premier)
+        $empruntByLivre = $empruntRepository->findByLivre(3);
+
+        // Liste des 10 derniers emprunts qui ont été retournés, triée par ordre **décroissant** de date de rendretour (le plus récent en premier)
+        $empruntByRetour = $empruntRepository->findByRetour();
+
+        // Liste des emprunts qui n'ont pas encore été retournés (c-à-d dont la date de retour est nulle), triée par ordre **croissant** de date d'emprunt (le plus ancien en premier)
+        $empruntNotReturn = $empruntRepository->findByNotRetour();
+
+        // Données de l'emprunt relié au livre dont l'id est `3`
+
+            // Requêtes de création :
+        $livreFoo = $livreRepository->find(1);
+        $emprunteurFoo = $emprunteurRepository->find(1);
+        // Ajouter un nouvel emprunt
+        $empruntFoo = new Emprunt();
+        //   - date d'emprunt : 01/12/2020 à 16h00
+        $empruntFoo->setDateEmprunt(new DateTime('2020-12-01 16:00:00'));
+        //   - date de retour : aucune date
+        $empruntFoo->setDateRetour(NULL);
+        //   - emprunteur : foo foo (id `1`)
+        $empruntFoo->setEmprunteur($emprunteurFoo);
+        //   - livre : Lorem ipsum dolor sit amet (id `1`)
+        $empruntFoo->setLivre($livreFoo);
+
+        $em->persist($empruntFoo);
+        $em->flush();
+            // Requêtes de mise à jour :
+
+        // Modifier l'emprunt dont l'id est `3`
+        $emprunt3 = $empruntRepository->find(3);
+
+        //   - date de retour : 01/05/2020 à 10h00
+        $emprunt3->setDateRetour(new DateTime('2020-05-01 10:00:00'));
+
+        $em->flush();
+
+            // Requêtes de suppression :
+
+        // Supprimer l'emprunt dont l'id est `42`   
+        $emprunt42 = $empruntRepository->find(42);
+            // Supprimer le livre dont l'id est `123`
+        if ($emprunt42){
+            // Suppression de l'objet
+        $em->remove($emprunt42);
+        $em->flush();
+        }
+
+        return $this->render('test/emprunt.html.twig', [
+            'empruntDate' => $empruntDate,
+            'empruntByEmprunteur' => $empruntByEmprunteur,
+            'empruntByLivre' => $empruntByLivre,
+            'empruntByRetour' => $empruntByRetour,
+            'empruntNotReturn' => $empruntNotReturn,
+        ]);
+    }
 
 }

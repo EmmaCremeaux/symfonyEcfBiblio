@@ -21,6 +21,72 @@ class EmprunteurRepository extends ServiceEntityRepository
         parent::__construct($registry, Emprunteur::class);
     }
 
+    /**
+    * @return Emprunteur[] Returns an array of Emprunteur objects
+    */
+   public function findAll(): array
+   {
+       return $this->createQueryBuilder('e')
+            ->orderBy('e.nom', 'ASC')
+            ->addOrderBy('e.prenom', 'ASC')
+            ->getQuery()
+            ->getResult()
+       ;
+   }
+
+       /**
+     * This method finds emprunteur with a user
+     * @param string $userId The id of the user of the emprunteur for which we want to find the emprunteurs
+     * @return Emprunteur[] Returns an array to Emprunteur objects
+    */
+    public function findByUser(?int $userId) : array
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.user = :val')
+            ->setParameter('val', $userId)
+            ->orderBy('e.nom', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * This method find all emprunteur containing one word
+     * @param string $keyword The word to search for
+     * @return Emprunteur[] Returns an array of emprunteur objects
+    */
+    public function findEmprunteurByKeyword(?string $keyword): array
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.nom LIKE :val')
+            ->orWhere('e.prenom LIKE :val')
+            ->setParameter('val', "%$keyword%")
+            ->orderBy('e.nom', 'ASC')
+            ->addOrderBy('e.prenom', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * This method find all emprunteur containing one word
+     * @param string $keyword The word to search for
+     * @return Emprunteur[] Returns an array of emprunteur objects
+    */
+    public function findEmprunteurByTel(?int $tel): array
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.telephone LIKE :val')
+            ->setParameter('val', "%$tel%")
+            ->orderBy('e.nom', 'ASC')
+            ->addOrderBy('e.prenom', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+    
 //    /**
 //     * @return Emprunteur[] Returns an array of Emprunteur objects
 //     */

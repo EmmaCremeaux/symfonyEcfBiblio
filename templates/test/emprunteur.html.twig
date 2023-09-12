@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test Emprunteur{% endblock %}
+
+{% block body %}
+
+<h2>Liste des emprunteurs par ordre alphabethique de nom</h2>
+{% for emprunteur in emprunteurListe %}
+<h3> {{ emprunteur.nom }} {{ emprunteur.prenom }} (id {{emprunteur.id}}) </h3>
+<p>Téléphone {{ emprunteur.telephone }}</p>
+{% endfor %}
+
+<h2>Données de l'emprunteur qui est relié au user dont l'id est `3`</h2>
+{% for emprunteurUser3 in emprunteurUser %}
+<h3> {{ emprunteurUser3.nom }} {{ emprunteurUser3.prenom }} (id {{emprunteurUser3.id}}) </h3>
+<p>Téléphone {{ emprunteurUser3.telephone }}</p>
+{% endfor %}
+
+<h2>Données de l'emprunteur dont le nom ou le prénom contient le mot clé `foo`</h2>
+{% for emprunteur in emprunteurFoo %}
+<h3> {{ emprunteur.nom }} {{ emprunteur.prenom }} (id {{emprunteur.id}}) </h3>
+<p>Téléphone {{ emprunteur.telephone }}</p>
+{% endfor %}
+
+<h2>Données de l'emprunteur dont telephone contient '1234'</h2>
+{% for emprunteur in emprunteurTel %}
+<h3> {{ emprunteur.nom }} {{ emprunteur.prenom }} (id {{emprunteur.id}}) </h3>
+<p>Téléphone {{ emprunteur.telephone }}</p>
+{% endfor %}
+
+
+{% endblock %}

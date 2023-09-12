@@ -77,9 +77,9 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
         // données dynamiques
         for($i = 0; $i < 500; $i++) {
             $auteur = new Auteur();
-            $auteur->setNom($this->faker->word());
+            $auteur->setNom($this->faker->lastName());
 
-            $auteur->setPrenom($this->faker->word());
+            $auteur->setPrenom($this->faker->firstName());
 
             $this->manager->persist($auteur);
         }
@@ -337,10 +337,8 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $user->setRoles($data['roles']);
             $user->setEnabled($data['enabled']);
             
-        
             $this->manager->persist($user); 
         
-            
             $emprunteur = new Emprunteur();
             $emprunteur->setNom($data['nom']);
             $emprunteur->setPrenom($data['prenom']);
@@ -365,14 +363,15 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $this->manager->persist($user);
 
             $emprunteur = new Emprunteur();
-            $emprunteur->setNom($this->faker->word(1));
-            $emprunteur->setPrenom($this->faker->word(1));
+            $emprunteur->setNom($this->faker->lastName());
+            $emprunteur->setPrenom($this->faker->firstName());
             $emprunteur->setTelephone($this->faker->unique()->randomNumber());
             $emprunteur->setUser($user);
 
             $this->manager->persist($emprunteur);
-        }
-        $this->manager->flush();
+
+            $this->manager->flush();
         
+        }
     }
 }
