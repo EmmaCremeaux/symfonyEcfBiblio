@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test Livre{% endblock %}
+
+{% block body %}
+{# <h2>Liste des livres par ordre alphabethique de titre</h2>
+
+{% for livre in livreList %}
+<h3> {{ livre.titre }} (id {{livre.id}}) </h3>
+<p>année d'édition {{ livre.anneeEdition }}</p>
+<p>nombre de page {{ livre.nombrePage }}</p>
+<p>code isbn {{ livre.codeIsbn }}</p>
+{% endfor %} #}
+
+<h2> Données du premier livre</h2>
+
+<h3> {{ livre1.titre }} {{livre1.id }} </h3>
+<p> Année d'édition : {{ livre1.anneeedition }}</p>
+<p> Nombre de page : {{ livre1.nombrepage }}, </p> 
+<p> Code Isbn : {{ livre1.codeisbn }}</p>
+<p> Auteur :  {{ livre1.auteur.nom }} {{ livre1.auteur.prenom }}</p>
+<p>Genres :</p>
+<ul>
+    {% for genre in livre1.genres %}
+        <li>{{ genre.nom }}</li>
+    {% endfor %}
+</ul>
+
+ <h2>Liste des livres ayant un titre contenant 'Lorem'</h2>
+{% for livre in loremLivre %}
+<h3> {{ livre.titre }} (id {{livre.id}}) </h3>
+<p>année d'édition {{ livre.anneeEdition }}</p>
+<p>nombre de page {{ livre.nombrePage }}</p>
+<p>code isbn {{ livre.codeIsbn }}</p>
+{% endfor %}
+
+<h2>Liste des livres ayant l'auteur dont l'id est 2</h2>
+{% for livre in livreAuteur %}
+<h3> {{ livre.titre }} (id {{livre.id}}) </h3>
+<p>année d'édition {{ livre.anneeEdition }}</p>
+<p>nombre de page {{ livre.nombrePage }}</p>
+<p>code isbn {{ livre.codeIsbn }}</p>
+{% endfor %}
+
+<h2>Liste des livres ayant comme genre "roman"</h2>
+{% for livre in genreRoman %}
+<h3> {{ livre.titre }} (id {{livre.id}}) </h3>
+<p>année d'édition {{ livre.anneeEdition }}</p>
+<p>nombre de page {{ livre.nombrePage }}</p>
+<p>code isbn {{ livre.codeIsbn }}</p>
+{% endfor %}
+
+{% endblock %}
