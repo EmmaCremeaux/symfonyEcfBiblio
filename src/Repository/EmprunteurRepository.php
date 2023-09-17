@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use DateTime;
 use App\Entity\Emprunteur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -85,6 +86,23 @@ class EmprunteurRepository extends ServiceEntityRepository
         ;
     }
 
+
+    /**
+     * This method find all emprunteur created before one date
+     * @param DateTime $date The word to search for
+     * @return Emprunteur[] Returns an array of emprunteur objects
+    */
+    public function findByCreatedDate(?DateTime $date): array
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.createdAt < :val')
+            ->setParameter('val', $date)
+            ->orderBy('e.nom', 'ASC')
+            ->addOrderBy('e.prenom', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     
 //    /**

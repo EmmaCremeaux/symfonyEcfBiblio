@@ -28,5 +28,11 @@
 <p>Téléphone {{ emprunteur.telephone }}</p>
 {% endfor %}
 
+<h2>Données de l'emprunteur dont la date de création est antérieure au 01/03/2021 exclu</h2>
+{% for emprunteur in emprunteurCreatedAt %}
+<h3> {{ emprunteur.nom }} {{ emprunteur.prenom }} (id {{emprunteur.id}}) </h3>
+<p>Téléphone {{ emprunteur.telephone }}</p>
+<p>Date de Création {{ emprunteur.createdAt|date('Y-m-d H:i:s') }}</p>
+{% endfor %}
 
 {% endblock %}

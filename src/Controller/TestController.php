@@ -156,6 +156,8 @@ class TestController extends AbstractController
         $emprunteurTel = $emprunteurRepository->findEmprunteurByTel(1234);
 
         // Liste des emprunteurs dont la date de création est antérieure au 01/03/2021 exclu (c-à-d strictement plus petit), triée par ordre alphabétique de nom et prénom
+        $datePrecise = new \DateTime('2021-03-01');
+        $emprunteurCreatedAt = $emprunteurRepository->findByCreatedDate($datePrecise);
 
 
         return $this->render('test/emprunteur.html.twig', [
@@ -164,11 +166,13 @@ class TestController extends AbstractController
             'emprunteurUser' => $emprunteurUser,
             'emprunteurFoo' => $emprunteurFoo,
             'emprunteurTel' => $emprunteurTel,
+            'emprunteurCreatedAt' => $emprunteurCreatedAt,
         ]);
     }
 
     #[Route('/emprunt', name: 'app_test_emprunt')]
     public function emprunt(ManagerRegistry $doctrine): Response
+    
     {
         $em = $doctrine->getManager();
         $empruntRepository = $em->getRepository(Emprunt::class);
