@@ -54,6 +54,11 @@ symfony serve
 ```
 
 puis ouvrez la page suivante : [home page](https://localhost:8000)
+pour vérifier les données de test : 
+                [page emprunteur](https://localhost:8000/test/emprunteur)
+                [page emprunt](https://localhost:8000/test/emprunt)
+                [page livre](https://localhost:8000/test/livre)
+                [page user](https://localhost:8000/test/user)
 
 ## Mentions Légales
 
