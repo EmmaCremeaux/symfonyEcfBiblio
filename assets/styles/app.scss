@@ -1,0 +1,33 @@
+@import "./custom.scss";
+
+body {
+    background-color: $primary;
+    color: $secondary;
+}
+
+a {
+    text-decoration: none;
+    color: $secondary;
+}
+
+.form_scrollable-checkboxes {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 400px;
+    overflow: scroll;
+    background-color: white;
+    input {
+        float: left;
+    }
+    label {
+        float: right;
+    }
+}
+
+.bonjour {
+    width: 350px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

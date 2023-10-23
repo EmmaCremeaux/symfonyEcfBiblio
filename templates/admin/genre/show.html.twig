@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Genre{% endblock %}
+
+{% block body %}
+    <h1>Genre</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ genre.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ genre.nom }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ genre.description }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ genre.createdAt ? genre.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ genre.updatedAt ? genre.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ genre.deletedAt ? genre.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_genre_index') }}">back to list</a>
+
+    <a href="{{ path('app_admin_genre_edit', {'id': genre.id}) }}">edit</a>
+
+    {{ include('admin/genre/_delete_form.html.twig') }}
+{% endblock %}
