@@ -32,28 +32,39 @@
 
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="{{path ('app_home')}}">Accueil</a>
+                                    </li>
+                                    {% if app.user %}
+                                        {% if is_granted('ROLE_ADMIN') %}
                                         <li class="nav-item">
-                                            <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Accueil</a>
+                                            <a class="nav-link" href="{{path ('app_emprunt_index')}}">Emprunts</a>
+                                        </li>
+                                        {% else %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_emprunt_index')}}">Emprunts</a>
+                                        </li>
+                                        {% endif %}
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_admin_livre_index')}}">Livres</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ path('app_admin_livre_index') }}">Livres</a>
+                                            <a class="nav-link" href="{{path ('app_admin_auteur_index')}}">Auteurs</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ path('app_admin_genre_index') }}">Genres</a>
+                                            <a class="nav-link" href="{{path ('app_admin_genre_index')}}">Genres</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ path('app_admin_auteur_index') }}">Auteurs</a>
+                                            <a class="nav-link" href="{{path ('app_admin_emprunteur_index')}}">Emprunteurs</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ path('app_admin_emprunt_index') }}">Emprunts</a>
+                                            <a class="nav-link" href="{{path ('app_admin_user_index')}}">Utilisateurs</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ path('app_admin_emprunteur_index') }}">Emprunteurs</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ path('app_admin_user_index') }}">Users</a>
-                                        </li>
-                                    </ul>
+                                        {% endif %}
+                                    {% endif %}
+                                    
+                                </ul> 
                                 </div>
 
                                 {% if app.user %}

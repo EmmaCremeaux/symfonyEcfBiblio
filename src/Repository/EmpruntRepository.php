@@ -40,12 +40,13 @@ class EmpruntRepository extends ServiceEntityRepository
      * This method find emprunts which have the emprunteur_id 2
      * @return Emprunt[] Returns an array of emprunt objects order by date
     */
-    public function findByEmprunteur(?int $emprunteurId) : array
+    public function findByEmprunteur($emprunteur): array
     {
-        return $this->createQueryBuilder('et')
-            ->andWhere('et.emprunteur = :val')
-            ->setParameter('val', $emprunteurId)
-            ->orderBy('et.dateEmprunt', 'ASC')
+        return $this->createQueryBuilder('e')
+            ->innerJoin('e. emprunteur', 'emp')
+            ->andWhere('emp = :emprunteur')
+            ->setParameter('emprunteur', $emprunteur)
+            ->orderBy('e.dateEmprunt', 'ASC')
             ->getQuery()
             ->getResult()
         ;
